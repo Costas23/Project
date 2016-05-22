@@ -76,8 +76,6 @@ public class LoginSignupScreen extends JFrame {
 				new MainPage(username.getText());
 				
 			}	
-			System.out.println(password.getText());
-			DataBase.print();
 
 		}
 	 }

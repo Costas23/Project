@@ -34,7 +34,7 @@ public class SearchScreen extends JFrame{
  
         setLayout(new FlowLayout());
         
-        Search = new JButton("Sign_up in");
+        Search = new JButton("Search");
 		contentPane.add(Search);
 		Search.addActionListener(new SearchActionListener());
  
