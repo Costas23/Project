@@ -6,8 +6,10 @@ public class main {
 
 	public static void main(String[] args) {
 		
-		DataBase d =new DataBase();		
-		LoginSignupScreen LSS = new LoginSignupScreen();
+		User u1 = new User("lydia","lydia","lydia");
+		DataBase.users.add(u1);
+		
+		LoginSignupScreen  LSS = new LoginSignupScreen();
 		
 
 	}

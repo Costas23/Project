@@ -14,6 +14,10 @@ public class SearchScreen extends JFrame{
 	
 	private JTextField username;
 	private JButton Search;
+	public Group m_Group;
+	private JTextField name;
+	public User_Timeline m_User_Timeline;
+	public User m_User;
 	
 	
 	public SearchScreen()
@@ -36,8 +40,8 @@ public class SearchScreen extends JFrame{
  
         contentPane.add(usersearch);
         contentPane.add(groupsearch);
-       
-        contentPane.add(username);
+        
+        this.setContentPane(contentPane);
         
  
         pack();
@@ -48,7 +52,7 @@ public class SearchScreen extends JFrame{
 	 {
 		 public void actionPerformed(ActionEvent e)
 		 	{
-			 	//TODO
+			 	//TODO 			 	
 			}
 	 }
 

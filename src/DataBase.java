@@ -1,55 +1,102 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
 //from this class we recover data from the save files
-public class DataBase {
+public final class DataBase {
 	// TODO double check users & groups about static
 	//TODO failsafe saving of all new staff if someone is to close the program 
 	
-	private ArrayList<User> users;
-	private ArrayList<Group> groups;
-	
+
+	protected static  ArrayList<User> users = new ArrayList<User>();
+	protected static ArrayList<Group> groups = new ArrayList<Group>();
+	protected static ArrayList<Post> posts = new ArrayList<Post>();
+
+	public User m_User;
+	public Post m_Post;
+
 	
 	public DataBase() {
 		
-		this.users = null;
-		this.groups = null;
+		
+//		this.users = null;
+//		this.groups = null;
+//		this.posts = null;
 		
 		
 		
 	}
 	
+	public static void print(){
+		for( User u: users){
+			System.out.println(u.getName() + " " + u.GetPassword());
+		}
+	}
 	
-	public void CreateUser(String name, String mail, String password)
+	
+
+	public static void createUser(String name, String mail, String password)
 	{
+		if(!isUser(mail)){
+		User u = new User(name, mail, password);
+		users.add(u);
 		
+		}
 	}
+		
+				
 
 	
 	
-	public void deleteUser(User auser)
+	public static void deleteUser(User auser)
 	{
 
 		String input = JOptionPane.showInputDialog("Enter password to delete user");
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
-		if(auser.isPasswordCorrect(input)) users.remove(auser);
+		if(auser.isPasswordCorrect(input)) users.remove(auser); 
 		JOptionPane.showMessageDialog(null, auser.getName()+ "Deleted!!", "User Deleted!", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	public void addGroup(Group agroup)
-	{
-		groups.add(agroup);
-	}
+
+	
 	
 
+	public static  boolean createGroup(String name, String info, boolean is_open) { //if group is to be open b==true else b==false
+		if(!isGroup(name)){
+			if(is_open){
+				Group agroup = new OpenGroup(name, info);
+				groups.add(agroup);
+			}
+			else {
+				Group agroup = new PrivateGroup(name, info);
+				groups.add(agroup);
+			}
+			return true; //Group Created
+		}
+			
+		
+		return false; //Group not Created		
+	}
+	
+	public static boolean deleteGroup(String name){
+		if(isGroup(name)){
+			//TODO show confirmation panel
+			Group agroup = getGroupInstance(name);
+			groups.remove(agroup);
+			
+		}
+		
+		
+		
+		
+		return false;		
+	}
+
+
+
 	//TODO save --find better way
-	public boolean save()
+	public static boolean save()
 	{
 		
 		try {
@@ -86,71 +133,33 @@ public class DataBase {
 		
 		
 	}
-<<<<<<< HEAD
+
 	
 	
-	public boolean retrieveAll()
+	
+
+
+
+	
+	
+	public static boolean retrieve()
 	{
-		this.retrievalOfObject(users);
-		this.retrievalOfObject(groups);
 		
-=======
-	//TODO save users
-	public void saveUsers()
-	{
+
 		
+		return true;
+
 	}
+
 
 	public ArrayList<Group> getgroups() {
 		// TODO Retrieve groups from savefiles
 		return groups;
->>>>>>> origin/master
-		
-		
-		
-		
-		
-		
-		
-		return true;
-	}
-	public boolean retrievalOfObject(Object ObjectType)
-	{
-		String name = ObjectType.getClass().getName();
-		try {
-			FileInputStream fileIn = new FileInputStream("."+ name + ".txt");
-			ObjectInputStream in = new ObjectInputStream(fileIn);
-			ArrayList<name> users = (ArrayList<name>) in.readObject();
-			in.close();
-			fileIn.close();	
-			
-		}
-		catch(IOException i) {
-			i.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Could not be retrieved from file", "Warning", JOptionPane.WARNING_MESSAGE);
-			return false;
-		}
-		catch(ClassNotFoundException c) {
-			c.printStackTrace();
-			return false;
-		}
-		finally {
-			System.out.println("Loaded");
-			
-		}
-		return true;
-	}
-	
-<<<<<<< HEAD
-	
 
+	}
 
-	
-	
-=======
->>>>>>> origin/master
 	//TODO complete getUserInstance
-	public User getUserInstance(String username)
+	public static User getUserInstance(String username)
 	{
 		for(User u : users)
 		{
@@ -162,11 +171,8 @@ public class DataBase {
 		JOptionPane.showMessageDialog(null,"User not found!","Message",JOptionPane.WARNING_MESSAGE);
 		return null;
 	}
-<<<<<<< HEAD
-	
-=======
->>>>>>> origin/master
-	public Group getGroupInstance(String groupname)
+
+	public static Group getGroupInstance(String groupname)
 	{
 		for(Group g : groups)
 		{
@@ -181,44 +187,55 @@ public class DataBase {
 	}
 	
 	//TODO check checkUser ** static?
-	public boolean checkUser(String name)
+
+	public static Group getPost(String postID) {
+		for(Group gr : groups)
+		{
+			if(gr.getName().equals(postID))
+			{
+				return gr;
+			}
+		}
+		return null;
+		
+	}
+
+
+
+	public static boolean checkUserPassword(String name,String password)
+
 	{
 		for(User u : users)
 		{
 			if(u.getName().equals(name))
 			{
-				while(true)
-				{
-				String input = JOptionPane.showInputDialog("Enter Input:");
-				if(u.isPasswordCorrect(input)) return true;
-				}
+//				while(true)
+//				{
+//				String input = JOptionPane.showInputDialog("Enter Input:");
+				if(u.isPasswordCorrect(password)) return true;
+//				}
 			}
-		}
-		
-		
+		}	
 		JOptionPane.showMessageDialog(null,"User not found!","Message",JOptionPane.PLAIN_MESSAGE);
 		return false;
 	}
-<<<<<<< HEAD
-	public boolean isUser(String name)
-=======
-	public static boolean isUser(String name)
->>>>>>> origin/master
+
+	public static boolean isUser(String mail)
 	{
 		for(User u : users)
 		{
-			if(u.getName().equals(name))
+			if(u.getMail().equals(mail))
 			{
 				return true;
 			}			
 		}
-		JOptionPane.showMessageDialog(null,"User not found!","Message",JOptionPane.PLAIN_MESSAGE);
 		return false;
 	}
 	
 	
 	
-	public boolean isgroup(String g)
+
+	public static boolean isGroup(String g)
 	{
 		for(Group gr : groups)
 		{
